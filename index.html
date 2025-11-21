@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيد ميلاد سعيد يا حمو الباشا!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff6b6b, #ffa36c, #ffde7d);
+            color: #fff;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+        
+        /* شاشة العد التنازلي */
+        #countdown-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s;
+        }
+        
+        .countdown-number {
+            font-size: 15rem;
+            font-weight: bold;
+            color: #fff;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* محتوى الموقع */
+        #content {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: colorChange 5s infinite alternate;
+        }
+        
+        @keyframes colorChange {
+            0% { color: #ff6b6b; }
+            25% { color: #ffa36c; }
+            50% { color: #ffde7d; }
+            75% { color: #6bffb8; }
+            100% { color: #6bb3ff; }
+        }
+        
+        .birthday-message {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* الكعكة المتحركة */
+        .cake-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+        
+        .cake {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 120px;
+            background: #f8c291;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        .cake-top {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 40px;
+            background: #e55039;
+            border-radius: 50%;
+        }
+        
+        .candles {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+        
+        .candle {
+            width: 10px;
+            height: 50px;
+            background: #fff;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .flame {
+            width: 15px;
+            height: 25px;
+            background: #ffde7d;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 10px #ffde7d, 0 0 20px #ffde7d;
+        }
+        
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.1); }
+        }
+        
+        /* البالونات */
+        .balloons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .balloon:before {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 30px;
+            background: rgba(255,255,255,0.5);
+        }
+        
+        .balloon:nth-child(1) {
+            background: #ff6b6b;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .balloon:nth-child(2) {
+            background: #6bffb8;
+            left: 20%;
+            animation-delay: 2s;
+        }
+        
+        .balloon:nth-child(3) {
+            background: #6bb3ff;
+            left: 30%;
+            animation-delay: 4s;
+        }
+        
+        .balloon:nth-child(4) {
+            background: #ffde7d;
+            left: 70%;
+            animation-delay: 1s;
+        }
+        
+        .balloon:nth-child(5) {
+            background: #c56cf0;
+            left: 80%;
+            animation-delay: 3s;
+        }
+        
+        .balloon:nth-child(6) {
+            background: #ffa36c;
+            left: 90%;
+            animation-delay: 5s;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100px); }
+        }
+        
+        /* رسائل التهنئة */
+        .wishes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .wish {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            width: 300px;
+            animation: fadeIn 1s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* زر إعادة التشغيل */
+        .restart-btn {
+            margin-top: 2rem;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .restart-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* الموسيقى */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .music-control i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .birthday-message {
+                font-size: 1.4rem;
+            }
+            
+            .countdown-number {
+                font-size: 10rem;
+            }
+            
+            .cake-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .cake {
+                width: 160px;
+                height: 100px;
+            }
+            
+            .cake-top {
+                width: 180px;
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة العد التنازلي -->
+    <div id="countdown-screen">
+        <div class="countdown-number" id="countdown-number">10</div>
+    </div>
+    
+    <!-- محتوى الموقع -->
+    <div id="content">
+        <div class="header">
+            <h1>🎉 عيد ميلاد سعيد 🎉</h1>
+            <h2>يا حمو الباشا!</h2>
+        </div>
+        
+        <div class="birthday-message">
+            كل عام وأنت بخير يا صديقي العزيز! أتمنى لك يومًا مليئًا بالفرح والضحك والذكريات الجميلة. 
+            أدام الله عليك الصحة والعافية وجعل أيامك كلها سعادة ونجاح.
+        </div>
+        
+        <!-- الكعكة المتحركة -->
+        <div class="cake-container">
+            <div class="cake"></div>
+            <div class="cake-top"></div>
+            <div class="candles">
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- البالونات -->
+        <div class="balloons">
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+        </div>
+        
+        <!-- رسائل التهنئة -->
+        <div class="wishes">
+            <div class="wish">كل عام وأنت أقرب إلى تحقيق أحلامك وأهدافك!</div>
+            <div class="wish">أدام الله عليك نعمة الصحة والعافية والفرح!</div>
+            <div class="wish">أتمنى أن يكون هذا العام مليئًا بالإنجازات والنجاحات!</div>
+            <div class="wish">كل عام وأنت إنسان رائع ومميز كما عهدناك!</div>
+        </div>
+        
+        <!-- زر إعادة التشغيل -->
+        <button class="restart-btn" onclick="restartCelebration()">إعادة التشغيل</button>
+    </div>
+    
+    <!-- تحكم بالموسيقى -->
+    <div class="music-control" id="music-control">
+        <i>🎵</i>
+    </div>
+    
+    <!-- الموسيقى -->
+    <audio id="birthday-song" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        المتصفح لا يدعم تشغيل الصوت.
+    </audio>
+    
+    <script>
+        // العد التنازلي
+        let count = 10;
+        const countdownElement = document.getElementById('countdown-number');
+        const countdownScreen = document.getElementById('countdown-screen');
+        const content = document.getElementById('content');
+        const audio = document.getElementById('birthday-song');
+        const musicControl = document.getElementById('music-control');
+        
+        function startCountdown() {
+            const countdownInterval = setInterval(() => {
+                countdownElement.textContent = count;
+                count--;
+                
+                if (count < 0) {
+                    clearInterval(countdownInterval);
+                    countdownScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        countdownScreen.style.display = 'none';
+                        content.style.display = 'block';
+                        // تشغيل الموسيقى بعد انتهاء العد التنازلي
+                        audio.play();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+        
+        // بدء العد التنازلي عند تحميل الصفحة
+        window.onload = startCountdown;
+        
+        // التحكم بالموسيقى
+        musicControl.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        });
+        
+        // إعادة التشغيل
+        function restartCelebration() {
+            count = 10;
+            countdownScreen.style.display = 'flex';
+            countdownScreen.style.opacity = '1';
+            content.style.display = 'none';
+            audio.pause();
+            audio.currentTime = 0;
+            startCountdown();
+        }
+    </script>
+</body>
+</html>
